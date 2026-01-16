@@ -51,7 +51,7 @@ infra/
 
 Развёрнут **Managed Kubernetes кластер** с использованием Terraform:
 
-- Regional master (multi-AZ)
+- Regional master (multi zone)
 - Master размещён в 3 подсетях (по одной в каждой зоне)
 - Публичный доступ к API (`public_ip = true`)
 - Node Group:
