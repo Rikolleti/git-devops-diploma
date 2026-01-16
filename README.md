@@ -23,7 +23,7 @@ terraform/
 
 ---
 
-### 2. Облачная инфраструктура (Terraform)
+#### 1.1 Облачная инфраструктура (Terraform)
 
 С помощью Terraform создана базовая инфраструктура в Yandex Cloud:
 
@@ -47,7 +47,7 @@ infra/
 
 ---
 
-### 3. Managed Kubernetes в Yandex Cloud
+### 2. Managed Kubernetes в Yandex Cloud
 
 Развёрнут **Managed Kubernetes кластер** с использованием Terraform:
 
@@ -76,7 +76,7 @@ infra/
 
 ---
 
-### 4. Доступ к Kubernetes кластеру
+#### 2.1 Доступ к Kubernetes кластеру
 
 - Конфигурация доступа сохранена в `~/.kube/config`
 - Контекст добавлен через `yc managed-kubernetes cluster get-credentials`
