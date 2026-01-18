@@ -100,5 +100,46 @@ kube-system   yc-disk-csi-node-v2-gcjsq            6/6     Running   0          
 kube-system   yc-disk-csi-node-v2-hv7gj            6/6     Running   0             40m
 ```
 
-### 3.Создание тестового приложения
+### 3. Создание тестового приложения
+
+В рамках дипломного задания подготовлено и развернуто тестовое приложение
+для проверки полного цикла:
+
+**Docker → Container Registry → Kubernetes → LoadBalancer**
+
+В качестве приложения используется простой **nginx** с кастомной HTML-страницей.
+
+---
+
+#### 3.1 Docker-образ приложения
+
+Создан Dockerfile для сборки образа:
+
+```dockerfile
+FROM nginx:alpine
+
+COPY index.html /usr/share/nginx/html/index.html
+
+EXPOSE 80
+```
+
+Docker-образ собран и загружен в Yandex Container Registry.
+
+Проверка образа в реестре:
+
+```
+rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma/terraform/app$ yc container image list --registry-id crp602u6ka42e2m3tmst
++----------------------+---------------------+-------------------------------------+--------+-----------------+
+|          ID          |       CREATED       |                NAME                 |  TAGS  | COMPRESSED SIZE |
++----------------------+---------------------+-------------------------------------+--------+-----------------+
+| crpo850n7658snl1g0rb | 2026-01-18 12:51:06 | crp602u6ka42e2m3tmst/netology-nginx | latest | 24.7 MB         |
++----------------------+---------------------+-------------------------------------+--------+-----------------+
+```
+
+После создания сервиса Kubernetes автоматически создал внешний балансировщик в Yandex Cloud:
+
+<img width="823" height="489" alt="Снимок экрана 2026-01-18 в 18 10 22" src="https://github.com/user-attachments/assets/277d7d80-a1ed-40b8-9156-3b1d1e3ba462" />
+
+
+
 
