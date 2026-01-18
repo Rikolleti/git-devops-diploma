@@ -133,7 +133,12 @@ COPY index.html /usr/share/nginx/html/index.html
 EXPOSE 80
 ```
 
-Docker-образ собран и загружен в Yandex Container Registry.
+Docker-образ собран и загружен в Yandex Container Registry:
+
+```
+docker build -t cr.yandex/crp602u6ka42e2m3tmst/netology-nginx:latest .
+docker push cr.yandex/crp602u6ka42e2m3tmst/netology-nginx:latest
+```
 
 Проверка образа в реестре:
 
