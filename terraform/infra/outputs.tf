@@ -9,3 +9,7 @@ output "k8s_cluster_name" {
 output "k8s_cluster_id" {
   value = yandex_kubernetes_cluster.k8s.id
 }
+
+output "container_registry_id" {
+  value = yandex_container_registry.main.id
+}

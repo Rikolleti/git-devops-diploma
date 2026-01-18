@@ -33,6 +33,12 @@ resource "yandex_resourcemanager_folder_iam_member" "vpc_user" {
   role      = "vpc.user"
   member    = "serviceAccount:${yandex_iam_service_account.k8s.id}"
 }
+
+resource "yandex_resourcemanager_folder_iam_member" "lb_admin" {
+  folder_id = var.folder_id
+  role      = "load-balancer.admin"
+  member    = "serviceAccount:${yandex_iam_service_account.k8s.id}"
+}
 # ---------- K8S Cluster ----------
 resource "yandex_kubernetes_cluster" "k8s" {
   name       = "netology-k8s"
