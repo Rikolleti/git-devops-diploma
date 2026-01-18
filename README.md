@@ -44,6 +44,16 @@ infra/
 ├── outputs.tf
 ```
 
+Результат:
+```
+rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma/terraform$ yc compute instance list
++----------------------+-------------------------------------+---------------+---------+-----------------+---------------+
+|          ID          |                NAME                 |    ZONE ID    | STATUS  |   EXTERNAL IP   |  INTERNAL IP  |
++----------------------+-------------------------------------+---------------+---------+-----------------+---------------+
+| epdgllrf42et6fifvv3m | cl1u5hukgn3667un5a7v-uhab           | ru-central1-b | RUNNING | 158.160.66.197  | 192.168.11.17 |
+| fhm15se23j8uhgsp0674 | netology_vm1                        | ru-central1-a | RUNNING | 158.160.51.200  | 192.168.10.34 |
+| fhmsvvni1hre9um1hkha | cl1u5hukgn3667un5a7v-ujop           | ru-central1-a | RUNNING | 178.154.201.219 | 192.168.10.10 |
+```
 
 ---
 
