@@ -1,4 +1,4 @@
-# Дипломный практикум: Yandex Cloud + Terraform + Kubernetes
+# Дипломный практикум в Yandex Cloud
 
 Данный репозиторий содержит выполнение дипломного задания по развёртыванию облачной инфраструктуры, Kubernetes-кластера и подготовке платформы для дальнейшего деплоя
 
@@ -99,3 +99,6 @@ kube-system   npd-v0.8.0-xgch5                     1/1     Running   0          
 kube-system   yc-disk-csi-node-v2-gcjsq            6/6     Running   0             39m
 kube-system   yc-disk-csi-node-v2-hv7gj            6/6     Running   0             40m
 ```
+
+### 3.Создание тестового приложения
+
