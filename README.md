@@ -274,6 +274,8 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc conta
 
 <img width="678" height="205" alt="Снимок экрана 2026-01-25 в 21 36 29" src="https://github.com/user-attachments/assets/a9a4a867-e3eb-43bd-8e2f-048cd7a495f6" />
 
+
 <img width="1031" height="568" alt="Снимок экрана 2026-01-25 в 21 38 11" src="https://github.com/user-attachments/assets/a320983d-797f-469d-850a-f31b413f890b" />
+
 
 <img width="1153" height="723" alt="Снимок экрана 2026-01-25 в 21 38 49" src="https://github.com/user-attachments/assets/e8b822c7-74fc-4233-bd23-b40a6725776d" />
