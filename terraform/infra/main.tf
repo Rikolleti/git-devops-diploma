@@ -33,10 +33,9 @@ resource "yandex_vpc_subnet" "public_d" {
   v4_cidr_blocks = ["192.168.12.0/24"]
 }
 
-#
 # ---------- VM ----------
 resource "yandex_compute_instance" "vm1" {
-  count       = 0
+  count       = 1
   name        = var.vm_name
   platform_id = "standard-v1"
   zone        = var.zone
