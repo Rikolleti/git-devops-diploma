@@ -8,6 +8,11 @@ variable "folder_id" {
   type        = string
 }
 
+
+variable "sa_key_file" {
+  type = string
+}
+
 variable "zone" {
   description = "Availability zone"
   type        = string
