@@ -214,3 +214,66 @@ Terraform variables:
 
 <img width="719" height="337" alt="7" src="https://github.com/user-attachments/assets/00e9e030-2a41-465f-8db1-f8bd3eec7d84" />
 
+### 5. CI/CD приложения
+
+Workflow описан в файле:
+```
+.github/workflows/app.yml
+```
+
+Он выполняет следующие задачи:
+
+#### 1️⃣ Сборка и публикация Docker-образа
+
+- При **коммите в ветку `master`**:
+  - собирается Docker-образ приложения
+  - образ публикуется в **Yandex Container Registry** с тегом `latest`
+
+- При **создании git-тега формата `v*` (например `v1.0.7`)**:
+  - собирается Docker-образ
+  - образ публикуется в YCR с версионным тегом (`v1.0.7`)
+
+Используемая команда сборки:
+```bash
+docker build -t cr.yandex/<REGISTRY_ID>/<IMAGE_NAME>:<TAG> .
+```
+
+Для работы CI/CD используются следующие GitHub Secrets:
+1. YC_SA_KEY — JSON-ключ Service Account для доступа к Yandex Cloud
+2. YC_REGISTRY_ID — ID Yandex Container Registry
+3. YC_IMAGE_NAME — имя Docker-образа
+4. KUBE_CONFIG_B64 — kubeconfig Kubernetes-кластера, закодированный в base64
+
+Push тега версии:
+```
+git tag v1.0.7
+git push origin v1.0.7
+```
+
+Приложение собирается из Dockerfile:
+```dockerfile
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+EXPOSE 80
+```
+
+При пуше тега workflow выполняет деплой новой версии приложения:
+```bash
+kubectl -n app set image deployment/netology-nginx \
+  nginx=cr.yandex/<REGISTRY_ID>/netology-nginx:v1.0.7
+```
+
+Проверка вывода версии в containter list:
+```
+rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc container image list
++----------------------+---------------------+-------------------------------------+--------+-----------------+
+|          ID          |       CREATED       |                NAME                 |  TAGS  | COMPRESSED SIZE |
++----------------------+---------------------+-------------------------------------+--------+-----------------+
+| crp2k4mau6agbcd3en8c | 2026-01-25 16:32:23 | crp602u6ka42e2m3tmst/netology-nginx | v1.0.7 | 24.7 MB         |
+```
+
+<img width="678" height="205" alt="Снимок экрана 2026-01-25 в 21 36 29" src="https://github.com/user-attachments/assets/a9a4a867-e3eb-43bd-8e2f-048cd7a495f6" />
+
+<img width="1031" height="568" alt="Снимок экрана 2026-01-25 в 21 38 11" src="https://github.com/user-attachments/assets/a320983d-797f-469d-850a-f31b413f890b" />
+
+<img width="1153" height="723" alt="Снимок экрана 2026-01-25 в 21 38 49" src="https://github.com/user-attachments/assets/e8b822c7-74fc-4233-bd23-b40a6725776d" />
