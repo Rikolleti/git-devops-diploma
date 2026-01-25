@@ -22,9 +22,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install YC CLI
+      - name: Install YC CLI (no sudo)
         run: |
-          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i /usr/local -n
+          mkdir -p $HOME/bin
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/release/latest/linux/amd64/yc -o $HOME/bin/yc
+          chmod +x $HOME/bin/yc
+          echo "$HOME/bin" >> $GITHUB_PATH
           yc --version
 
       - name: Configure YC CLI (Service Account)
