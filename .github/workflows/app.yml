@@ -23,12 +23,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install YC CLI (no sudo)
+        shell: bash
         run: |
-          mkdir -p "$HOME/bin"
-          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/release/latest/linux/amd64/yc -o "$HOME/bin/yc"
-          chmod +x "$HOME/bin/yc"
-          echo "$HOME/bin" >> $GITHUB_PATH
-          export PATH="$HOME/bin:$PATH"
+          set -euo pipefail
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i "$HOME/yandex-cloud" -n
+          export PATH="$HOME/yandex-cloud/bin:$PATH"
           yc --version
 
       - name: Configure YC CLI (Service Account)
@@ -66,6 +65,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install kubectl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+          kubectl version --client
 
       - name: Setup kubeconfig
         run: |
