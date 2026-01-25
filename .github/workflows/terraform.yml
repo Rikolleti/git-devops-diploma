@@ -5,7 +5,7 @@ on:
     paths:
       - "terraform/infra/**"
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
     paths:
       - "terraform/infra/**"
 
