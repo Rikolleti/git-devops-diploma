@@ -210,4 +210,7 @@ Terraform variables:
 
 <img width="1511" height="808" alt="5" src="https://github.com/user-attachments/assets/29f1c261-3a6e-48c1-aa0a-38451da0fae8" />
 
+<img width="1511" height="794" alt="6" src="https://github.com/user-attachments/assets/6e7b6990-edeb-4260-bfaf-1bc76e476883" />
+
+<img width="719" height="337" alt="7" src="https://github.com/user-attachments/assets/00e9e030-2a41-465f-8db1-f8bd3eec7d84" />
 
