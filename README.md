@@ -296,4 +296,16 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc conta
 - CI/CD для инфраструктуры и приложения;
 - автоматический деплой по git-тегам.
 
+Ссылка на тестовое приложение и веб интерфейс Grafana с данными доступа:
+Приложение: http://158.160.190.157/
+
+Grafana: http://158.160.216.152/dashboards
+Логин: admin  
+Пароль: хранится в Kubernetes secret
+
+```bash
+kubectl -n monitoring get secret monitoring-grafana \
+  -o jsonpath="{.data.admin-password}" | base64 -d
+```
+
 Все этапы соответствуют требованиям дипломного задания.
