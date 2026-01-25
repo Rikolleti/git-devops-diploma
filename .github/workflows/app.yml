@@ -1,0 +1,82 @@
+name: App CI/CD (Docker -> YCR -> K8s)
+
+on:
+  push:
+    paths:
+      - "app/**"
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: cr.yandex
+      REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
+      IMAGE_NAME: ${{ secrets.YC_IMAGE_NAME }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install YC CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i /usr/local -n
+          yc --version
+
+      - name: Configure YC CLI (Service Account)
+        run: |
+          echo '${{ secrets.YC_SA_KEY }}' > key.json
+          yc config set service-account-key key.json
+
+      - name: Get IAM token and Docker login to YCR
+        run: |
+          IAM_TOKEN=$(yc iam create-token)
+          echo "$IAM_TOKEN" | docker login -u oauth --password-stdin $REGISTRY
+
+      - name: Build & Push (latest on commit)
+        if: github.ref_type != 'tag'
+        working-directory: app
+        run: |
+          IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:latest"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Build & Push (versioned on tag)
+        if: github.ref_type == 'tag'
+        working-directory: app
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG_B64 }}" | base64 -d > ~/.kube/config
+          kubectl version --client
+          kubectl get ns
+
+      - name: Deploy new image to Kubernetes
+        run: |
+          REGISTRY="cr.yandex"
+          REGISTRY_ID="${{ secrets.YC_REGISTRY_ID }}"
+          IMAGE_NAME="${{ secrets.YC_IMAGE_NAME }}"
+          TAG="${GITHUB_REF_NAME}"
+
+          IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
+
+          kubectl -n app set image deployment/netology-nginx netology-nginx="$IMAGE"
+          kubectl -n app rollout status deployment/netology-nginx --timeout=180s
