@@ -35,7 +35,7 @@ resource "yandex_vpc_subnet" "public_d" {
 
 # ---------- VM ----------
 resource "yandex_compute_instance" "vm1" {
-  count = 0
+  count       = 0
   name        = var.vm_name
   platform_id = "standard-v1"
   zone        = var.zone
