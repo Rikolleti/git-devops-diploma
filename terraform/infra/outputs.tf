@@ -1,5 +1,6 @@
 output "vm_public_ip" {
-  value = yandex_compute_instance.vm1.network_interface[0].nat_ip_address
+  description = "Public IP of compute VM (null if VM is disabled)"
+  value       = try(yandex_compute_instance.vm1[0].network_interface[0].nat_ip_address, null)
 }
 
 output "k8s_cluster_name" {
@@ -14,4 +15,5 @@ output "container_registry_id" {
   value = yandex_container_registry.main.id
 }
 
+#
 #

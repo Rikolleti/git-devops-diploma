@@ -16,6 +16,12 @@ concurrency:
 env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
+  TF_VAR_cloud_id: ${{ secrets.YC_CLOUD_ID }}
+  TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
+  TF_VAR_sa_key_file: ${{ github.workspace }}/key.json
+  TF_VAR_vm_name: ${{ secrets.TF_VAR_vm_name }}
+  TF_VAR_subnet_name: ${{ secrets.TF_VAR_subnet_name }}
+  TF_VAR_metadata: ${{ secrets.TF_VAR_metadata }}
 
   # Yandex provider
   YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
@@ -50,7 +56,7 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform init
-        run: terraform init
+        run: terraform init -backend-config=backend.hcl
 
       - name: Terraform validate
         run: terraform validate
