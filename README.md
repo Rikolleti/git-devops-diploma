@@ -180,6 +180,8 @@ monitoring-grafana   LoadBalancer   10.96.193.28   158.160.216.152   80:32167/TC
 
 <img width="1511" height="855" alt="3" src="https://github.com/user-attachments/assets/b56ea3c8-6834-41da-93a3-968817c47043" />
 
+<img width="1511" height="772" alt="4" src="https://github.com/user-attachments/assets/6ad01bcc-4d01-42c5-ab13-ca4df6823593" />
+
 Http доступ на 80 порту к тестовому приложению:
 
 
