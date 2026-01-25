@@ -13,3 +13,5 @@ output "k8s_cluster_id" {
 output "container_registry_id" {
   value = yandex_container_registry.main.id
 }
+
+#
