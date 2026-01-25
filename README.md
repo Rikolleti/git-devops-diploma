@@ -161,3 +161,25 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma/terraform
 <img width="660" height="169" alt="Снимок экрана 2026-01-18 в 19 15 42" src="https://github.com/user-attachments/assets/29123e2b-6496-486e-a5b3-40badc7ed0bf" />
 
 
+### 3. Cистема мониторинга
+
+Создан yaml файл monitoring-values.yaml чтобы Grafana была LoadBalancer на 80:
+```
+kubectl -n monitoring get svc monitoring-grafana
+NAME                 TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)        AGE
+monitoring-grafana   LoadBalancer   10.96.193.28   158.160.216.152   80:32167/TCP   4m31s
+```
+
+Получен http доступ на 80 порту к web интерфейсу grafana:
+
+<img width="1511" height="834" alt="1" src="https://github.com/user-attachments/assets/66ee0c15-68b0-498d-82a3-851a1317372f" />
+
+Присутствуют дашборды в grafana отображающие состояние Kubernetes кластера:
+
+<img width="1511" height="834" alt="2" src="https://github.com/user-attachments/assets/9c26fc49-3947-4459-a94e-7ba4dc786183" />
+
+<img width="1511" height="855" alt="3" src="https://github.com/user-attachments/assets/b56ea3c8-6834-41da-93a3-968817c47043" />
+
+Http доступ на 80 порту к тестовому приложению:
+
+
