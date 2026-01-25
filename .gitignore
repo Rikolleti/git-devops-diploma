@@ -13,6 +13,8 @@ crash.*.log
 **/*.auto.tfvars
 
 sa-key.json
+key.json
+terraform/infra/key.json
 **/key.json
 
 .kube/
