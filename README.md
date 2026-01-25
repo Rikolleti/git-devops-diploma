@@ -300,6 +300,7 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc conta
 Приложение: http://158.160.190.157/
 
 Grafana: http://158.160.216.152/dashboards
+
 Логин: admin  
 Пароль: хранится в Kubernetes secret
 
