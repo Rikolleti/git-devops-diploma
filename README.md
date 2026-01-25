@@ -161,7 +161,12 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma/terraform
 <img width="660" height="169" alt="Снимок экрана 2026-01-18 в 19 15 42" src="https://github.com/user-attachments/assets/29123e2b-6496-486e-a5b3-40badc7ed0bf" />
 
 
-### 3. Cистема мониторинга
+### 4. Cистема мониторинга
+
+```
+monitoring/
+├── monitoring-values.yaml
+```
 
 Создан yaml файл monitoring-values.yaml чтобы Grafana была LoadBalancer на 80:
 ```
