@@ -2,12 +2,13 @@ name: App CI/CD (Docker -> YCR -> K8s)
 
 on:
   push:
+    branches: [ "master" ]
     paths:
-      - "app/**"
-  workflow_dispatch:
-  push:
+      - "terraform/app/**"
+      - ".github/workflows/app.yml"
     tags:
       - "v*"
+  workflow_dispatch:
 
 jobs:
   build_and_push:
@@ -38,7 +39,7 @@ jobs:
 
       - name: Build & Push (latest on commit)
         if: github.ref_type != 'tag'
-        working-directory: app
+        working-directory: terraform/app
         run: |
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:latest"
           docker build -t "$IMAGE" .
@@ -46,7 +47,7 @@ jobs:
 
       - name: Build & Push (versioned on tag)
         if: github.ref_type == 'tag'
-        working-directory: app
+        working-directory: terraform/app
         run: |
           TAG="${GITHUB_REF_NAME}"
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
