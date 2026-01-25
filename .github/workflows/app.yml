@@ -85,10 +85,14 @@ jobs:
           kubectl version --client
 
       - name: Setup kubeconfig
+        shell: bash
         run: |
+          export PATH="$HOME/yandex-cloud/bin:$PATH"
+          which yc
+          yc --version
+
           mkdir -p ~/.kube
           echo "${{ secrets.KUBE_CONFIG_B64 }}" | base64 -d > ~/.kube/config
-          kubectl version --client
           kubectl get ns
 
       - name: Deploy new image to Kubernetes
