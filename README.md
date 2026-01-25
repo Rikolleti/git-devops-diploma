@@ -271,7 +271,7 @@ kubectl -n app set image deployment/netology-nginx \
   nginx=cr.yandex/<REGISTRY_ID>/netology-nginx:v1.0.7
 ```
 
-Проверка вывода версии в containter list:
+Проверка вывода версии в container list:
 ```
 rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc container image list
 +----------------------+---------------------+-------------------------------------+--------+-----------------+
@@ -287,3 +287,13 @@ rikolleti@compute-vm-2-2-30-hdd-1751355561681:~/Netology/git-2-diploma$ yc conta
 
 
 <img width="1153" height="723" alt="Снимок экрана 2026-01-25 в 21 38 49" src="https://github.com/user-attachments/assets/e8b822c7-74fc-4233-bd23-b40a6725776d" />
+
+## Итог
+В рамках дипломного проекта была реализована полноценная платформа:
+- инфраструктура в Yandex Cloud, управляемая Terraform;
+- Managed Kubernetes кластер;
+- система мониторинга Kubernetes;
+- CI/CD для инфраструктуры и приложения;
+- автоматический деплой по git-тегам.
+
+Все этапы соответствуют требованиям дипломного задания.
