@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i "$HOME/yandex-cloud" -n
-          export PATH="$HOME/yandex-cloud/bin:$PATH"
+          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH
           yc --version
 
       - name: Configure YC CLI (Service Account)
