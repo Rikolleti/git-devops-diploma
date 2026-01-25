@@ -29,6 +29,13 @@ jobs:
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i "$HOME/yandex-cloud" -n
           echo "$HOME/yandex-cloud/bin" >> "$GITHUB_PATH"
           export PATH="$HOME/yandex-cloud/bin:$PATH"
+          yc --version
+
+      - name: Configure YC CLI (Service Account)
+        shell: bash
+        run: |
+          echo '${{ secrets.YC_SA_KEY }}' > key.json
+          yc config set service-account-key key.json
 
       - name: YC sanity check
         run: |
