@@ -24,10 +24,11 @@ jobs:
 
       - name: Install YC CLI (no sudo)
         run: |
-          mkdir -p $HOME/bin
-          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/release/latest/linux/amd64/yc -o $HOME/bin/yc
-          chmod +x $HOME/bin/yc
+          mkdir -p "$HOME/bin"
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/release/latest/linux/amd64/yc -o "$HOME/bin/yc"
+          chmod +x "$HOME/bin/yc"
           echo "$HOME/bin" >> $GITHUB_PATH
+          export PATH="$HOME/bin:$PATH"
           yc --version
 
       - name: Configure YC CLI (Service Account)
@@ -82,5 +83,5 @@ jobs:
 
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
 
-          kubectl -n app set image deployment/netology-nginx netology-nginx="$IMAGE"
+          kubectl -n app set image deployment/netology-nginx nginx="$IMAGE"
           kubectl -n app rollout status deployment/netology-nginx --timeout=180s
