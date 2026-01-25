@@ -42,9 +42,10 @@ jobs:
           yc config set service-account-key key.json
 
       - name: Get IAM token and Docker login to YCR
+        shell: bash
         run: |
           IAM_TOKEN=$(yc iam create-token)
-          echo "$IAM_TOKEN" | docker login -u oauth --password-stdin $REGISTRY
+          echo "$IAM_TOKEN" | docker login -u iam --password-stdin $REGISTRY
 
       - name: Build & Push (latest on commit)
         if: github.ref_type != 'tag'
