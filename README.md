@@ -179,7 +179,7 @@ monitoring-grafana   LoadBalancer   10.96.193.28   158.160.216.152   80:32167/TC
 
 <img width="1511" height="834" alt="1" src="https://github.com/user-attachments/assets/66ee0c15-68b0-498d-82a3-851a1317372f" />
 
-Присутствуют дашборды в grafana отображающие состояние Kubernetes кластера:
+Присутствуют дашборды в grafana отображающие состояние Kubernetes кластера
 
 <img width="1511" height="834" alt="2" src="https://github.com/user-attachments/assets/9c26fc49-3947-4459-a94e-7ba4dc786183" />
 
@@ -187,6 +187,26 @@ monitoring-grafana   LoadBalancer   10.96.193.28   158.160.216.152   80:32167/TC
 
 <img width="1511" height="772" alt="4" src="https://github.com/user-attachments/assets/6ad01bcc-4d01-42c5-ab13-ca4df6823593" />
 
-Http доступ на 80 порту к тестовому приложению:
+#### 4.1. Деплой инфраструктуры в Terraform pipeline (CI/CD Terraform)
+
+Для автоматизации управления инфраструктурой использован CI/CD пайплайн Terraform на базе GitHub Actions
+
+CI/CD настроен для каталога:
+```
+terraform/infra
+```
+
+Workflow:
+```
+.github/workflows/terraform.yml
+```
+
+Terraform variables:
+Передаются через TF_VAR_*
+В репозитории отсутствуют секреты и ключи доступа
+
+Проверка инфраструктуры выполняется при каждом Pull Request и применение изменений выполняется автоматически при merge в master:
+
+<img width="1511" height="808" alt="5" src="https://github.com/user-attachments/assets/29f1c261-3a6e-48c1-aa0a-38451da0fae8" />
 
 
