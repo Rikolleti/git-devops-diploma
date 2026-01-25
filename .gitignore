@@ -1,30 +1,53 @@
-**/.terraform/*
+####################################
+# Terraform
+####################################
+
+# Terraform working directory
+**/.terraform/
+
+# Terraform lock file
 **/.terraform.lock.hcl
 
+# Terraform state files
 **/*.tfstate
 **/*.tfstate.*
 
-crash.log
-crash.*.log
-
+# Terraform plan files
 *.tfplan
 
+# Terraform variables
 **/terraform.tfvars
 **/*.auto.tfvars
 
+####################################
+# Secrets / keys
+####################################
+
+# Yandex Cloud / Service Account keys
 sa-key.json
 key.json
-terraform/infra/key.json
 **/key.json
 
+# Kubernetes
 .kube/
 kubeconfig
-*config.yaml
+kubeconfig.*
+*.kubeconfig
+*.b64
 
-.DS_Store
-.idea/
+####################################
+# Logs
+####################################
+
+crash.log
+crash.*.log
 *.log
 
-echo "terraform/infra/key.json" >> .gitignore
-echo "*.tfstate*" >> .gitignore
-echo ".terraform/" >> .gitignore
+####################################
+# Other
+####################################
+
+*config.yaml
+.DS_Store
+.idea/
+.vscode/
