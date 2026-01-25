@@ -21,3 +21,7 @@ kubeconfig
 .DS_Store
 .idea/
 *.log
+
+echo "terraform/infra/key.json" >> .gitignore
+echo "*.tfstate*" >> .gitignore
+echo ".terraform/" >> .gitignore
