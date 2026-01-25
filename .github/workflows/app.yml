@@ -2,7 +2,7 @@ name: App CI/CD (Docker -> YCR -> K8s)
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
     paths:
       - "terraform/app/**"
       - ".github/workflows/app.yml"
@@ -32,30 +32,26 @@ jobs:
       - name: Configure YC CLI (Service Account)
         shell: bash
         run: |
-          echo '${{ secrets.YC_SA_KEY }}' > key.json
+          set -euo pipefail
+          cat > key.json << 'EOF'
+          ${{ secrets.YC_SA_KEY }}
+          EOF
           yc config set service-account-key key.json
-
-      - name: YC sanity check
-        run: |
-          which yc
           yc --version
 
-      - name: Configure YC CLI (Service Account)
+      - name: Docker login to YCR
         shell: bash
         run: |
-          echo '${{ secrets.YC_SA_KEY }}' > key.json
-          yc config set service-account-key key.json
-
-      - name: Get IAM token and Docker login to YCR
-        shell: bash
-        run: |
-          IAM_TOKEN=$(yc iam create-token)
-          echo "$IAM_TOKEN" | docker login -u iam --password-stdin $REGISTRY
+          set -euo pipefail
+          IAM_TOKEN="$(yc iam create-token)"
+          echo "$IAM_TOKEN" | docker login -u iam --password-stdin "$REGISTRY"
 
       - name: Build & Push (latest on commit)
         if: github.ref_type != 'tag'
         working-directory: terraform/app
+        shell: bash
         run: |
+          set -euo pipefail
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:latest"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
@@ -63,7 +59,9 @@ jobs:
       - name: Build & Push (versioned on tag)
         if: github.ref_type == 'tag'
         working-directory: terraform/app
+        shell: bash
         run: |
+          set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
           docker build -t "$IMAGE" .
@@ -78,25 +76,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install kubectl
+      - name: Install kubectl + yc, configure yc, setup kubeconfig, verify
+        shell: bash
         run: |
+          set -euo pipefail
+
+          echo "== Install kubectl =="
           sudo apt-get update
           sudo apt-get install -y kubectl
           kubectl version --client
 
-      - name: Setup kubeconfig
-        shell: bash
-        run: |
+          echo "== Install yc (no sudo) =="
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i "$HOME/yandex-cloud" -n
           export PATH="$HOME/yandex-cloud/bin:$PATH"
-          which yc
+          echo "yc path: $(command -v yc || true)"
           yc --version
 
+          echo "== Configure yc with service account key =="
+          cat > key.json << 'EOF'
+          ${{ secrets.YC_SA_KEY }}
+          EOF
+          yc config set service-account-key key.json
+
+          echo "== Setup kubeconfig =="
           mkdir -p ~/.kube
           echo "${{ secrets.KUBE_CONFIG_B64 }}" | base64 -d > ~/.kube/config
+
+          echo "== Verify cluster access =="
           kubectl get ns
 
       - name: Deploy new image to Kubernetes
+        shell: bash
         run: |
+          set -euo pipefail
           REGISTRY="cr.yandex"
           REGISTRY_ID="${{ secrets.YC_REGISTRY_ID }}"
           IMAGE_NAME="${{ secrets.YC_IMAGE_NAME }}"
