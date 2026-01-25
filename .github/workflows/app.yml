@@ -76,44 +76,51 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install kubectl + yc, configure yc, setup kubeconfig, verify
+      - name: Install kubectl
         shell: bash
         run: |
           set -euo pipefail
-
-          echo "== Install kubectl =="
           sudo apt-get update
           sudo apt-get install -y kubectl
           kubectl version --client
 
-          echo "== Install yc (no sudo) =="
+      - name: Install & Configure YC CLI (needed by kubeconfig exec)
+        shell: bash
+        run: |
+          set -euo pipefail
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i "$HOME/yandex-cloud" -n
+          echo "$HOME/yandex-cloud/bin" >> "$GITHUB_PATH"
           export PATH="$HOME/yandex-cloud/bin:$PATH"
-          echo "yc path: $(command -v yc || true)"
-          yc --version
 
-          echo "== Configure yc with service account key =="
           cat > key.json << 'EOF'
           ${{ secrets.YC_SA_KEY }}
           EOF
           yc config set service-account-key key.json
 
-          echo "== Setup kubeconfig =="
+          yc --version
+          yc config list || true
+
+      - name: Setup kubeconfig and verify access
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/yandex-cloud/bin:$PATH"
+
           mkdir -p ~/.kube
           echo "${{ secrets.KUBE_CONFIG_B64 }}" | base64 -d > ~/.kube/config
 
-          echo "== Verify cluster access =="
           kubectl get ns
 
       - name: Deploy new image to Kubernetes
         shell: bash
         run: |
           set -euo pipefail
+          export PATH="$HOME/yandex-cloud/bin:$PATH"
+
           REGISTRY="cr.yandex"
           REGISTRY_ID="${{ secrets.YC_REGISTRY_ID }}"
           IMAGE_NAME="${{ secrets.YC_IMAGE_NAME }}"
           TAG="${GITHUB_REF_NAME}"
-
           IMAGE="$REGISTRY/$REGISTRY_ID/$IMAGE_NAME:$TAG"
 
           kubectl -n app set image deployment/netology-nginx nginx="$IMAGE"
